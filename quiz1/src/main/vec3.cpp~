@@ -1,0 +1,92 @@
+/*
+  Implementation of the vec3 class.
+
+  Wherever you see TODO, you should fill in code to perform the
+  required function.
+
+  I decided not to use a namespace declaration or directive, so this
+  file is more verbose than you would normally see in the real
+  world. The only reason for this is to show you how a custom
+  namespace gets used.
+
+  \author Richard Kelley
+
+  \author Cody Callahan
+*/
+
+#include "vec3.h"
+#include <cmath>
+
+simphys::vec3::vec3(float x_, float y_, float z_) : x(x_), y(y_), z(z_) {
+  // TODO - make sure you understand what this notation for a
+  // constructor is doing. If you haven't seen this before, bring it
+  // up on Piazza and we can talk about initializer lists.
+}
+
+float simphys::vec3::norm() const {
+  return sqrtf(norm_sq());
+}
+
+float simphys::vec3::norm_sq() const {
+  return x*x + y*y + z*z;
+}
+
+simphys::vec3 simphys::vec3::normalized() const {
+  float normal = norm();
+  return vec3(x / normal, y / normal, z / normal);
+}
+
+void simphys::vec3::normalize() { 
+  float normal = norm();
+	setX(x/normal);
+	setY(y/normal);
+	setZ(z/normal);
+}
+
+float simphys::vec3::dotProduct(const simphys::vec3& other) const {
+  return x * other.x + y * other.y + z * other.z;
+}
+
+simphys::vec3 simphys::vec3::crossProduct(const simphys::vec3& other) const {
+  return vec3(y*other.z -z*other.y, z*other.x - x*other.z, x*other.y - y*other.x);
+}
+
+float simphys::vec3::getX() const {
+  return x;
+}
+
+float simphys::vec3::getY() const {
+  return y;
+}
+
+float simphys::vec3::getZ() const {
+  return z;
+}
+
+void simphys::vec3::setX(float newX) {
+  x = newX;
+}
+
+void simphys::vec3::setY(float newY) {
+  y = newY;
+}
+
+void simphys::vec3::setZ(float newZ) {
+  z = newZ;
+}
+
+simphys::vec3 simphys::operator+(const simphys::vec3& v1, const simphys::vec3& v2) {
+  return vec3(v1.getX()+v2.getX(), v1.getY()+v2.getY(), v1.getZ()+v2.getZ());
+}
+
+simphys::vec3 simphys::operator-(const simphys::vec3& v1, const simphys::vec3& v2) {
+  return vec3(v1.getX()-v2.getX(), v1.getY()-v2.getY(), v1.getZ()-v2.getZ());
+}
+
+simphys::vec3 simphys::operator*(float c, const simphys::vec3& v1) {
+  return vec3(v1.getX() * c, v1.getY() * c, v1.getZ() * c);
+}
+
+simphys::vec3 simphys::operator*(const simphys::vec3& v1, float c) {
+  return vec3(v1.getX() * c, v1.getY() * c, v1.getZ() * c);
+}

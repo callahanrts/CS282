@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/vec3.h
+
+/home/cody/Desktop/simphys/quiz1/src/main/vec3.cpp
+vec3.h
+/home/cody/Desktop/simphys/quiz1/src/main/vec3.h
+cmath
+-
+

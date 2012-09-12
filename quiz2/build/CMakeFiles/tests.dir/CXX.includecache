@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/clock.h
+
+/home/cody/Desktop/quiz2/src/main/clock.cpp
+iostream
+-
+chrono
+-
+thread
+-
+clock.h
+/home/cody/Desktop/quiz2/src/main/clock.h
+
