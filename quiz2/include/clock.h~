@@ -11,7 +11,6 @@
   from the time measured by our clocks.
 */
 
-//FOR TESTS, COMPARE TICKS
 
 namespace simphys {
 

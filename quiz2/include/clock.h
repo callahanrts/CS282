@@ -11,7 +11,6 @@
   from the time measured by our clocks.
 */
 
-
 namespace simphys {
 
   class Clock {
@@ -46,6 +45,10 @@ namespace simphys {
       zero.
     */
     Clock(float startTime);
+
+		// getter and setter for freq
+    void setFreq(float newFreq);
+    float getFreq() const;
 
     // getter and setter for timeScale
     void setScale(float newScale);

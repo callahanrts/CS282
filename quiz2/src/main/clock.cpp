@@ -4,37 +4,36 @@
 #include "clock.h"
 using namespace std;
 
-simphys::Clock::Clock(float startTime):paused{false}, timeScale{1.0f}{
-	//TODO Not implemented yet
+simphys::Clock::Clock(float startTime)
+{
+	paused    = false;
+	timeScale = 1.0f;
   freq      = 1000000;
-  ticks     = secondsToTicks(startTime);
+  ticks     = (startTime > 0) ? secondsToTicks(startTime) : 0;
+}
 
-	/*std::cout << 
-	"Start Time: " << startTime << endl << 
-	"Frequency: "<< freq << endl <<
-	"timeScale: " << timeScale << endl <<
-	"Ticks: " << ticks << endl <<
-	endl << endl << endl;*/
+void simphys::Clock::update(float dt){
+	if(!paused)
+	{
+		ticks += freq * dt * timeScale;
+	}
 }
 
 long long simphys::Clock::secondsToTicks(float seconds) const {
-	return (long long)(freq * seconds);
+	return (freq * seconds);
 }
 
 float simphys::Clock::ticksToSeconds(long long ticks) const {
 	return (float)(ticks / freq);
 }
 
-void simphys::Clock::update(float dt){
-	//TODO Not implemented yet
-	if(!paused)
-	{
-		ticks += secondsToTicks(dt * timeScale);
-
-		//std::cout << "Ticks: "<< ticks << std::endl;
-	}
+void simphys::Clock::setFreq(float newFreq){
+	freq = newFreq;
 }
 
+float simphys::Clock::getFreq() const {
+	return freq;
+}
 
 void simphys::Clock::setScale(float newScale){
 	timeScale = newScale;

@@ -1,9 +1,3 @@
-/*#include "clock.h"
-#include "gtest/gtest.h"
-#include <iostream>
-#include <chrono>
-#include <thread>*/
-
 /*
   Test code for the clock class.
 
@@ -59,7 +53,7 @@ protected:
     This is the object we're testing.
   */
   Clock c;
-  
+  long long i;
   /*
     The initialization list below uses uniform initialization syntax
     for each of the three variables. That's why it's {} instead of ().
@@ -67,7 +61,7 @@ protected:
   TestClock() 
     : oneSecond{1}
     , wait_time{16}
-    , c{0.0f} {
+    , c{0.0f}, i{0}{
 
     }
 
@@ -83,6 +77,7 @@ TEST_F(TestClock, RealTime) {
   float dt = 0.0f;
 
   do {
+	i++;
     auto startLoop = std::chrono::high_resolution_clock::now();
     c.update(dt);
     std::this_thread::sleep_for(wait_time);
@@ -91,10 +86,10 @@ TEST_F(TestClock, RealTime) {
     dt = (std::chrono::duration_cast<std::chrono::microseconds>(endLoop - startLoop).count() / 1000000.0);
   } while ((currentTime - startTime) < oneSecond);
 
-  std::cout << "Error in real-time clock: " << 1000000 - c.getTicks() << " microseconds." << std::endl;
+  std::cout << "\033[1;31m Error in real-time clock: " << 1000000 - c.getTicks() << " microseconds.\033[0m\n " << i << std::endl;
 
   EXPECT_LE(1000000 - c.getTicks(), 5000);
-
+	std::this_thread::sleep_for(50 * wait_time);
 }
 
 TEST_F(TestClock, DoubleTime) {
@@ -105,6 +100,7 @@ TEST_F(TestClock, DoubleTime) {
   float dt = 0.0f;
 
   do {
+	i++;
     auto startLoop = std::chrono::high_resolution_clock::now();
     c.update(dt);
     std::this_thread::sleep_for(wait_time);
@@ -113,9 +109,10 @@ TEST_F(TestClock, DoubleTime) {
     dt = (std::chrono::duration_cast<std::chrono::microseconds>(endLoop - startLoop).count() / 1000000.0);
   } while ((currentTime - startTime) < oneSecond);
 
-  std::cout << "Error in double-time clock: " << 2000000 - c.getTicks() << " microseconds." << std::endl;
+  std::cout << "\033[1;31m Error in double-time clock: " << 2000000 - c.getTicks() << " microseconds.\033[0m\n " << i << std::endl;
 
   EXPECT_LE(2000000 - c.getTicks(), 5000);
+	std::this_thread::sleep_for(50 * wait_time);
 
 }
 
@@ -128,11 +125,11 @@ TEST_F(TestClock, HalfTime) {
   auto currentTime = startTime;
 
   // The number of seconds between the top of the loop and the bottom of the loop.
-  float dt = 0.0f;
+  float dt = 0.0f; 
   do {
     // get the time at the top of the loop
     auto startLoop = std::chrono::high_resolution_clock::now();
-    
+    i++;
     // At the top of the loop we update the Clock instance.
     c.update(dt);
 
@@ -161,7 +158,7 @@ TEST_F(TestClock, HalfTime) {
   } while ((currentTime - startTime) < oneSecond);
 
   // print out the number of ticks.
-  std::cout << "Error in half-time clock: " << 500000 - c.getTicks() << " microseconds." << std::endl;
+  std::cout << "\033[1;31m Error in half-time clock: " << 500000 - c.getTicks() << " microseconds.\033[0m\n " << i << std::endl;
 
   /* 
      The difference between the actual number of ticks and the
@@ -174,101 +171,7 @@ TEST_F(TestClock, HalfTime) {
      clocks.
   */
   EXPECT_LE(500000 - c.getTicks(), 3000);
+	std::this_thread::sleep_for(50 * wait_time);
   
 }
 
-
-
-
-
-
-
-
-
-/*
-auto start_time = std::chrono::high_resolution_clock::now();
-auto end_time = start_time;
-simphys::Clock gclock(0.0);;
-
-void work() {
-	start_time = std::chrono::high_resolution_clock::now();
-
-  std::chrono::milliseconds tick{16};
-  std::this_thread::sleep_for(tick);
-
-	end_time = std::chrono::high_resolution_clock::now();
-}
-
-TEST(Frequency, toTicks) {	
-	work();
-	gclock.update(std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count());
-
-	EXPECT_EQ((long long)(62.5f * 5.0f), gclock.secondsToTicks(5.0f));
-}
-
-TEST(Frequency, toSecs) {
-	work();
-	gclock.update(std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count());
-
-	EXPECT_EQ(0.001f, gclock.ticksToSeconds(1000));
-}
-TEST(Get_Set, Paused){
-	work();
-	gclock.update(std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count());
-
-	gclock.setPaused(true);
-	EXPECT_EQ(true, gclock.getPaused());
-}
-TEST(Get_Set, Scale){
-	work();
-	gclock.update(std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count());
-
-	gclock.setScale(0.7f);
-	EXPECT_EQ(0.7f, gclock.getScale());
-}
-TEST(Get_Set, Ticks){
-	//clock.getTicks();
-}
-
-
-/*
-// do work.
-void work() {
-  std::chrono::milliseconds tick{16};
-  std::this_thread::sleep_for(tick);
-}
-
-void loop() {
-  auto start_time = std::chrono::high_resolution_clock::now();
-  auto end_time = start_time;
-
-  // real time between frames.
-  float dt = 0.0f;
-
-	simphys::Clock clock( std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count());
-
-	for(int i = 0; i < 10; i++){
-//  while(1) {
-    // get the start time
-    start_time = std::chrono::high_resolution_clock::now();
-	  
-    // do stuff
-    work();
-
-    // get the end time
-    end_time = std::chrono::high_resolution_clock::now();
-
-    // figure out the difference
-    dt = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
-
-		std::cout << dt << std::endl;
-
-		clock.update(dt);
-  }//while
-
-}//loop
-
-int main() {
-  loop();
-}
-*/
