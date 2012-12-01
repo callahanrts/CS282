@@ -1,0 +1,84 @@
+#include <memory>
+#include <vector>
+#include "gtest/gtest.h"
+#include "../main/lab4.cpp"
+
+const float PI = 3.14159265f;
+
+TEST(Shapes, DrawTriangle) {
+  Triangle t{1.0f, 1.0f, 1.0f};
+  EXPECT_EQ("drew a triangle", t.draw());
+}
+
+TEST(Shapes, DrawSquare) {
+  Square s{1.0f};
+  EXPECT_EQ("drew a square", s.draw());
+}
+
+TEST(ShapePtr, DrawSquare) {
+  // change this to make the test pass
+  std::shared_ptr<Shape> s = nullptr;
+	s = std::make_shared<Square>(1.0f);
+  EXPECT_EQ("drew a square", s->draw());
+}
+
+TEST(Shapes, BunchOfSquaresArea) {
+  // change these to make the test pass
+  std::shared_ptr<Shape> sq_ptr1 = std::make_shared<Square>(1.0f);
+  std::shared_ptr<Shape> sq_ptr2 = std::make_shared<Square>(1.0f);
+  std::shared_ptr<Shape> sq_ptr3 = std::make_shared<Square>(1.0f);
+
+  EXPECT_FLOAT_EQ(3.0f, sq_ptr1->area() + 
+		  sq_ptr2->area() + sq_ptr3->area());
+}
+
+TEST(Shapes, BunchOfTrianglesArea) {
+  // change these to make the tests pass.
+  std::shared_ptr<Shape> t_ptr1 = std::make_shared<Triangle>(3.0f, 4.0f, 5.0);
+  std::shared_ptr<Shape> t_ptr2 = std::make_shared<Triangle>(3.0f, 4.0f, 5.0);
+  std::shared_ptr<Shape> t_ptr3 = std::make_shared<Triangle>(3.0f, 4.0f, 5.0);
+
+  EXPECT_FLOAT_EQ(18.0f, t_ptr1->area() + 
+		  t_ptr2->area() + t_ptr3->area());
+}
+
+TEST(Shapes, DifferentShapes) {
+  // change the assignments so that the test becomes true.
+  std::shared_ptr<Shape> sq_ptr1 = std::make_shared<Square>(4.0f); 
+  std::shared_ptr<Shape> t_ptr1 = std::make_shared<Triangle>(3.0f, 4.0f, 5.0f);
+  std::shared_ptr<Shape> t_ptr2 = std::make_shared<Triangle>(3.0f, 4.0f, 5.0f);
+
+  EXPECT_FLOAT_EQ(28.0f,
+		  sq_ptr1->area() + t_ptr1->area() + t_ptr2->area());
+}
+
+TEST(ShapeVec, AreasSumCorrectly) {
+  std::vector<std::shared_ptr<Shape> > drawingBoard{};
+
+  // TODO Add three unit triangles to the drawingBoard.
+	drawingBoard.std::vector<std::shared_ptr<Shape> >::
+			push_back(std::make_shared<Triangle>(3.0f, 4.0f, 5.0f));
+
+	drawingBoard.std::vector<std::shared_ptr<Shape> >::
+  		push_back(std::make_shared<Triangle>(3.0f, 4.0f, 5.0f));
+
+	drawingBoard.std::vector<std::shared_ptr<Shape> >::
+			push_back(std::make_shared<Triangle>(3.0f, 4.0f, 5.0f));
+
+  // TODO Add three unit squares to the drawingBoard
+	drawingBoard.std::vector<std::shared_ptr<Shape> >::
+			push_back(std::make_shared<Square>(1.0f));
+
+	drawingBoard.std::vector<std::shared_ptr<Shape> >::
+			push_back(std::make_shared<Square>(1.0f));
+
+	drawingBoard.std::vector<std::shared_ptr<Shape> >::
+			push_back(std::make_shared<Square>(1.0f));
+
+  float areas = 0.0f;
+  for (const auto s : drawingBoard) {
+    areas += s->area();
+  }
+
+  EXPECT_FLOAT_EQ(3.0 + 3.0 * 0.5f, areas);
+}
